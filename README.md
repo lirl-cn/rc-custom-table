@@ -22,8 +22,10 @@ required|key前是否显示*|boolean|false
 
 
 ----
-
 ## example
+
+![示例](https://s2.ax1x.com/2019/03/05/kXvHfO.png "示例")
+
 ```js
 import React from 'react';
 import ReactDOM from 'react-dom';
