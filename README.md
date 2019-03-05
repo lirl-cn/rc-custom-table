@@ -1,6 +1,7 @@
 # rc-antd-table 
 ### 描述：
 >TableProps
+
 参数|说明|类型|默认值
 --|:--:|--:
 dataSource|数据源|TableColumns[]|无，必填
@@ -11,6 +12,7 @@ className|表格类名|string|无
 ----
 
 >TableProps
+
 参数|说明|类型|默认值
 --|:--:|--:
 label|key|string|无，必填
