@@ -1,22 +1,29 @@
 import React from 'react';
 import './index.css';
-interface CustomFilterProps {
-    form: any;
-    title: string;
-    name: string;
-    initialValue?: any;
-    validator?: (rule: any, value: any, callback: any) => void;
-    valuePropName?: string;
-    validateTrigger?: string;
-    onOk?: (name: string, value: any, title?: any) => void;
-    overlayClassName?: string;
-    renderParent?: true | false;
+interface TableColumns {
+    label: string;
+    value: any;
+    required?: boolean;
+    column?: number;
 }
-declare class CustomFilter extends React.Component<CustomFilterProps, any> {
-    constructor(props: CustomFilterProps);
-    filterOnClick: () => void;
-    hideFilter: () => void;
-    componentDidMount(): void;
+interface TableProps {
+    dataSource: TableColumns[];
+    columns?: number;
+    className?: string;
+    labelWidth?: number;
+    [propsName: string]: any;
+}
+declare class CustomTable extends React.Component<TableProps, any> {
+    constructor(props: TableProps);
+    renderItem: (data: TableColumns & {
+        key: string;
+    }) => JSX.Element;
+    resetColumn: (column: number | undefined, globalColumn: number) => number;
+    /**
+     * dataSource 数据源
+     * column global列数
+     */
+    renderContent: (dataSource: TableColumns[], column: number) => any[];
     render(): JSX.Element;
 }
-export default CustomFilter;
+export default CustomTable;
