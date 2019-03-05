@@ -11,7 +11,7 @@ className|表格类名|string|无
 
 ----
 
->TableProps
+>TableColumns
 
 参数|说明|类型|默认值
 --|--|--|--
