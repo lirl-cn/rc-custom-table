@@ -42,8 +42,8 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
       hasLabel = true
     } = data;
     // console.log(data.key)
-    return <div key={data.key} className={classnames('lirl-custom-table-item', {'lirl-custom-table-item-no-border': !border}, data.className)} style={{ flex: data.column || 1, ...data.style, }}>
-      {hasLabel && <div className={classnames('lirl-custom-table-item-label', {'lirl-custom-table-item-label-required': !data.isEmpty && data.required, 'lirl-custom-table-item-label-none': !data[labelAlias]})} style={{ width: labelWidth }}>{ data.isEmpty ? '' : data[labelAlias]}</div>}
+    return <div key={data.key} className={classnames('lirl-custom-table-item', { 'lirl-custom-table-item-no-border': !border }, data.className)} style={{ flex: data.column || 1, ...data.style, }}>
+      {hasLabel && <div className={classnames('lirl-custom-table-item-label', { 'lirl-custom-table-item-label-required': !data.isEmpty && data.required, 'lirl-custom-table-item-label-none': !data[labelAlias] })} style={{ width: labelWidth }}>{data.isEmpty ? '' : data[labelAlias]}</div>}
       <div className='lirl-custom-table-item-value' >{data.isEmpty ? '' : data[labelAlias] ? formatStringRender(data[valueAlias], '-') : valueEmptyText}</div>
     </div>
   }, [props])
@@ -56,7 +56,7 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
     let content: any[] = []; //用于保存内容的数组
     for (let i = 0, len = dataSource.length; i < len;) { //遍历数据源，进行渲染
       const item = dataSource[i]; //每一行的第一个元素
-      if(item.show === false){
+      if (item.show === false) {
         i++;
         continue
       }
@@ -93,10 +93,10 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
     return content; //返回所有的数据
   }, [])
 
-  return <div className={classnames('lirl-custom-table-container',{'lirl-custom-table-container-no-border': !border}, props.className)} style={props.style}>{renderContent(props.dataSource, props.columns)}</div>
+  return <div className={classnames('lirl-custom-table-container', { 'lirl-custom-table-container-no-border': !border }, props.className)} style={props.style}>{renderContent(props.dataSource, props.columns)}</div>
 }
 
-CustomTable.defaultProps={
+CustomTable.defaultProps = {
   labelWidth: 136,
   labelAlias: 'label',
   valueAlias: 'value',

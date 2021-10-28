@@ -5,7 +5,7 @@
 参数|说明|类型|默认值
 --|--|--|--
 dataSource|数据源|TableColumns[]|无，必填
-column|全局列数显示|number|1
+columns|全局列数显示|number|1
 labelWidth|label列宽|number|120
 labelAlias|label别称|string|label
 valueAlias|value别称|string|value
