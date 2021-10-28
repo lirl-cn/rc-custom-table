@@ -1,29 +1,27 @@
 import React from 'react';
-import './index.css';
-interface TableColumns {
-    label: string;
+import './index.less';
+export declare type TableColumns = {
+    label: any;
     value: any;
     required?: boolean;
     column?: number;
-}
-interface TableProps {
-    dataSource: TableColumns[];
-    columns?: number;
+    hasLabel?: boolean;
     className?: string;
-    labelWidth?: number;
+    show?: boolean;
+    isEmpty?: boolean;
+    style?: React.CSSProperties;
     [propsName: string]: any;
+};
+export interface CustomTableProps {
+    dataSource: TableColumns[];
+    className?: string;
+    style?: React.CSSProperties;
+    columns?: number;
+    labelWidth?: number;
+    labelAlias?: string;
+    valueAlias?: string;
+    border?: boolean;
+    valueEmptyText?: string;
 }
-declare class CustomTable extends React.Component<TableProps, any> {
-    constructor(props: TableProps);
-    renderItem: (data: TableColumns & {
-        key: string;
-    }) => JSX.Element;
-    resetColumn: (column: number | undefined, globalColumn: number) => number;
-    /**
-     * dataSource 数据源
-     * column global列数
-     */
-    renderContent: (dataSource: TableColumns[], column: number) => any[];
-    render(): JSX.Element;
-}
+declare const CustomTable: React.FC<CustomTableProps>;
 export default CustomTable;

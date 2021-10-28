@@ -1,0 +1,87 @@
+@error-color: #f56c6c;
+
+.lirl-custom-table-container{
+  &:not(.lirl-custom-table-container-no-border){
+    border-top: 1px solid rgba(225,227,238,1);
+    border-left: 1px solid rgba(225,227,238,1);
+  }
+  .ant-form-item-control{
+    line-height: 1.5;
+  }
+  .lirl-custom-table-row{
+    display: flex;
+    align-items: stretch;
+  }
+  
+  .lirl-custom-table-item{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    // font-size: 12px;
+    >div{
+      display: flex;
+      align-items: center;
+      min-height: 42px;
+      height: 100%;
+      // box-shadow:0px 1px 0px 0px #F2F2F2,-1px 0px 0px 0px #F2F2F2;
+      
+    }
+    &:not(.lirl-custom-table-item-no-border){
+      border-bottom: 1px solid rgba(225,227,238,1);
+      border-right: 1px solid rgba(225,227,238,1);
+    }
+    >div.lirl-custom-table-item-label{
+      justify-content: flex-end;
+      background: rgba(248,249,253,1);
+      &.lirl-custom-table-item-label-required{
+        &::before{
+          display: flex;
+          content: '*';
+          color: @error-color;
+        }
+      }
+    }
+    >div.lirl-custom-table-item-value{
+      flex: 1;
+      width: 0;
+      padding: 4px 8px;
+      word-break: break-all;
+      background: unset;
+      .ant-form-item{
+        margin-bottom: 0;
+        flex: 1;
+        width: 0;
+      }
+      .ant-transfer-list{
+        flex: 1;
+      }
+    }
+    &:not(.lirl-custom-table-item-no-border){
+      >div.lirl-custom-table-item-label{
+        border-right: 1px solid rgba(225,227,238,1);
+        padding: 4px 8px;
+      }
+      >div.lirl-custom-table-item-value{
+        .ant-form-item{
+          margin-bottom: 0;
+          .ant-input-number{
+            width: 100%;
+          }
+        }
+      }
+    }
+    &.lirl-custom-table-item-no-border{
+      >div.lirl-custom-table-item-label{
+        justify-content: flex-end;
+        background: unset;
+        &:not(.lirl-custom-table-item-label-none)::after{
+          display: flex;
+          content: '：';
+        }
+      }
+      >div.lirl-custom-table-item-value{
+        padding: 8px;
+      }
+    }
+  }
+}

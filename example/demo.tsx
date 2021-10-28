@@ -47,7 +47,7 @@ class Demo extends React.Component<any,any>{
                     value: '演唱会'
                 },
             ]}
-            column={3}
+            columns={3}
          />
     }
 }

@@ -1,16 +1,3 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    }
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -28,67 +15,75 @@ var __assign = (this && this.__assign) || function () {
  * @Last Modified by: 李瑞鹿
  * @Last Modified time: 2019-03-05 13:44:28
  */
-import React from 'react';
-import './index.css';
-var CustomTable = /** @class */ (function (_super) {
-    __extends(CustomTable, _super);
-    function CustomTable(props) {
-        var _this = _super.call(this, props) || this;
-        _this.renderItem = function (data) {
-            var labelWidth = _this.props.labelWidth; //默认120
-            return React.createElement("div", { key: data.key, className: "custom-table-item", style: { flex: data.column || 1 } },
-                React.createElement("div", { className: 'custom-table-item-label', style: { width: labelWidth || 120 } },
-                    data.required && React.createElement("span", { className: 'custom-table-item-label-required' }, "*"),
-                    data.label),
-                React.createElement("div", { className: 'custom-table-item-value' }, data.value));
-        };
-        _this.resetColumn = function (column, globalColumn) {
-            if (column === void 0) { column = 1; }
-            return column > globalColumn ? globalColumn : column;
-        };
-        /**
-         * dataSource 数据源
-         * column global列数
-         */
-        _this.renderContent = function (dataSource, column) {
-            var content = []; //用于保存内容的数组
-            for (var i = 0, len = dataSource.length; i < len;) { //遍历数据源，进行渲染
-                var item = dataSource[i]; //每一行的第一个元素
-                item.column = _this.resetColumn(item.column, column);
-                var columns = item.column; //用于保存 column 之和
-                var index = [i]; //用于保存改行可以显示的元素所有下标
-                var isExceed = false; //该行元素总列数是否已经超出全局列数
-                for (var j = 1; j <= column; j++) { //遍历全局列数的数据
-                    var nextItem = dataSource[i + j];
-                    if (!nextItem || isExceed) { //当元素不存在或已经超出全局列数 则退出
-                        continue;
-                    }
-                    nextItem.column = _this.resetColumn(nextItem.column, column);
-                    columns += nextItem.column; //累加 列数
-                    index.push(i + j);
-                    if (columns > column) { //若该行元素总列数大于全局列数时，设置isExceed=true，减去该元素的列数，并将下标去除
-                        isExceed = true;
-                        columns -= nextItem.column;
-                        index.pop();
-                        continue;
-                    }
-                }
-                i += index.length; //循环跳过当前行所有元素
-                if (index.length < column && columns < column) { //若当前行元素列数之和小于全局列数时，进行补齐
-                    for (var ii = 0, len_1 = column - columns; ii < len_1; ii++) {
-                        index.push(i + '' + ii + '999');
-                    }
-                }
-                content.push(React.createElement("div", { className: "custom-table-row", key: i + "-" + item.label }, index.map(function (it) { return _this.renderItem(__assign({}, dataSource[it] || {}, { key: it })); }))); //遍历添加改行每个元素
+import React, { useCallback } from 'react';
+import classnames from 'classnames';
+import { formatStringRender } from './utils';
+import './index.less';
+var CustomTable = function (props) {
+    var labelWidth = props.labelWidth, _a = props.labelAlias, labelAlias = _a === void 0 ? 'label' : _a, _b = props.valueAlias, valueAlias = _b === void 0 ? 'value' : _b, _c = props.valueEmptyText, valueEmptyText = _c === void 0 ? '-' : _c, border = props.border;
+    var renderItem = useCallback(function (data) {
+        var _a = data.hasLabel, hasLabel = _a === void 0 ? true : _a;
+        // console.log(data.key)
+        return React.createElement("div", { key: data.key, className: classnames('lirl-custom-table-item', { 'lirl-custom-table-item-no-border': !border }, data.className), style: __assign({ flex: data.column || 1 }, data.style) },
+            hasLabel && React.createElement("div", { className: classnames('lirl-custom-table-item-label', { 'lirl-custom-table-item-label-required': !data.isEmpty && data.required, 'lirl-custom-table-item-label-none': !data[labelAlias] }), style: { width: labelWidth } }, data.isEmpty ? '' : data[labelAlias]),
+            React.createElement("div", { className: 'lirl-custom-table-item-value' }, data.isEmpty ? '' : data[labelAlias] ? formatStringRender(data[valueAlias], '-') : valueEmptyText));
+    }, [props]);
+    var resetColumn = useCallback(function (column, globalColumn) {
+        if (column === void 0) { column = 1; }
+        return column > globalColumn ? globalColumn : column;
+    }, []);
+    var renderContent = useCallback(function (dataSource, column) {
+        var content = []; //用于保存内容的数组
+        var _loop_1 = function (i, len) {
+            var item = dataSource[i]; //每一行的第一个元素
+            if (item.show === false) {
+                i++;
+                return out_i_1 = i, "continue";
             }
-            return content; //返回所有的数据
+            item.column = resetColumn(item.column, column);
+            var columns = item.column; //用于保存 column 之和
+            var index = [i]; //用于保存改行可以显示的元素所有下标
+            var isExceed = false; //该行元素总列数是否已经超出全局列数
+            // let num = 0;
+            for (var j = 1; j <= column; j++) { //遍历全局列数的数据
+                // num ++;
+                var nextItem = dataSource[i + j];
+                if (!nextItem || isExceed || nextItem.show === false) { //当元素不存在或已经超出全局列数 则退出
+                    continue;
+                }
+                nextItem.column = resetColumn(nextItem.column, column);
+                columns += nextItem.column; //累加 列数
+                index.push(i + j);
+                if (columns > column) { //若该行元素总列数大于全局列数时，设置isExceed=true，减去该元素的列数，并将下标去除
+                    isExceed = true;
+                    columns -= nextItem.column;
+                    index.pop();
+                    continue;
+                }
+            }
+            // console.log(num, index.length)
+            i += index.length; //循环跳过当前行所有元素
+            if (index.length < column && columns < column) { //若当前行元素列数之和小于全局列数时，进行补齐
+                for (var ii = 0, len_1 = column - columns; ii < len_1; ii++) {
+                    index.push(i + '' + ii + '999');
+                }
+            }
+            content.push(React.createElement("div", { className: 'lirl-custom-table-row', key: i + "-" + (item.labelAlias || item.label) }, index.map(function (it) { return renderItem(__assign(__assign({}, dataSource[it] || {}), { key: i + " - " + it })); }))); //遍历添加改行每个元素
+            out_i_1 = i;
         };
-        return _this;
-    }
-    CustomTable.prototype.render = function () {
-        var _a = this.props, className = _a.className, dataSource = _a.dataSource, _b = _a.column, column = _b === void 0 ? 2 : _b;
-        return React.createElement("div", { className: "custom-table-container " + (className || '') }, this.renderContent(dataSource, column));
-    };
-    return CustomTable;
-}(React.Component));
+        var out_i_1;
+        for (var i = 0, len = dataSource.length; i < len;) {
+            _loop_1(i, len);
+            i = out_i_1;
+        }
+        return content; //返回所有的数据
+    }, []);
+    return React.createElement("div", { className: classnames('lirl-custom-table-container', { 'lirl-custom-table-container-no-border': !border }, props.className), style: props.style }, renderContent(props.dataSource, props.columns));
+};
+CustomTable.defaultProps = {
+    labelWidth: 136,
+    labelAlias: 'label',
+    valueAlias: 'value',
+    border: true,
+};
 export default CustomTable;
